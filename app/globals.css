@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your existing global styles here */
+body {
+  min-height: 100dvh;
+}
+
