@@ -47,17 +47,7 @@ function PowerFlowWrapper() {
         return statuses
       } catch (e) {
         console.error("Error fetching power data:", e)
-        //throw e
-
-        // Return default values in case of error
-        return {
-          gridPower: 400,
-          homePower: 1000,
-          solarPower: 600,
-          batteryPower: 0,
-          batteryPercentage: 0,
-          gridStatus: 1,
-        }
+        throw e
       } finally {
         const endTime = performance.now()
         setRequestTime((endTime - startTime) / 1000) // Convert to seconds

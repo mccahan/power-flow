@@ -171,13 +171,15 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
       <text y="-50" textAnchor="middle" className="fill-black/90 text-lg font-medium">
         {displayPower} kW
       </text>
-      <g transform="translate(0,35)">
-        <rect x="-90" y="-4" width="140" height="8" rx="4" className="fill-white/20" />
-        <rect x="-90" y="-4" width={(140 * displayPercentage) / 100} height="8" rx="4" className="fill-green-500" />
-        <text x="90" y="5" textAnchor="end" className="fill-white/90 text-sm">
-          {displayPercentage}%
-        </text>
-      </g>
+      {percentage > 0.1 && (
+        <g transform="translate(0,35)">
+          <rect x="-90" y="-4" width="140" height="8" rx="4" className="fill-white/20" />
+          <rect x="-90" y="-4" width={(140 * displayPercentage) / 100} height="8" rx="4" className="fill-green-500" />
+          <text x="90" y="5" textAnchor="end" className="fill-white/90 text-sm">
+        {displayPercentage}%
+          </text>
+        </g>
+      )}
     </g>
   )
 }
