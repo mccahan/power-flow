@@ -59,7 +59,7 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT=3000
-ENV PYPOWERWALL_URL=http://localhost:8657
+ENV PYPOWERWALL_URL=http://localhost:8675
 
 ENV HOSTNAME="0.0.0.0"
 COPY --chown=nextjs:nextjs docker-entrypoint.sh /app/docker-entrypoint.sh 
