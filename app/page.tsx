@@ -53,6 +53,7 @@ function PowerFlowWrapper() {
         setRequestTime((endTime - startTime) / 1000) // Convert to seconds
       }
     },
+    refetchOnWindowFocus: false,
     refetchInterval: 5000, // Refetch every 5 seconds
     staleTime: 60000, // Data becomes stale after 60 seconds
   })
