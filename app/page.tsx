@@ -16,7 +16,7 @@ function PowerFlowWrapper() {
     queryFn: async () => {
       const startTime = performance.now()
       try {
-        const response = await fetch("PYPOWERWALL_URL" + "/csv/v2")
+        const response = await fetch("https://pypowerwall.mccahan.dev" + "/csv/v2")
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }

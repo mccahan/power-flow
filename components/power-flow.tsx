@@ -142,14 +142,17 @@ function PowerNode({
 function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power: number; percentage: number }) {
   const displayPower = (power / 1000).toFixed(1)
   const displayPercentage = Math.round(percentage)
+  const disableBranding = DISABLE_BRANDING
 
   return (
     <g transform={`translate(${x},${y})`}>
       <g clipPath="url(#a)" transform={`translate(-90,-80)`}>
         <path fill="url(#b)" d="M0 0h180v100H0z" />
-        <g fill="#8E8E8E" opacity={0.68} transform="scale(0.5) translate(90, 30)" className="teslaLogo">
-          <path d="M30 64.034c.35 1.228 1.53 2.482 3.15 2.796h4.896l.25.09v11.118h3.058V66.92l.277-.089h4.9c1.639-.38 2.794-1.568 3.138-2.796v-.027H30v.027ZM60.26 78.07h11.63c1.62-.29 2.822-1.573 3.159-2.815H57.101c.336 1.242 1.556 2.525 3.159 2.815ZM60.26 72.366h11.63c1.62-.287 2.822-1.57 3.159-2.814H57.101c.336 1.244 1.556 2.527 3.159 2.814ZM60.26 66.816h11.63c1.62-.29 2.822-1.573 3.159-2.816H57.101c.336 1.243 1.556 2.525 3.159 2.816ZM86.787 66.789h10.745c1.62-.424 2.981-1.535 3.312-2.766h-17.07v8.3h13.971v2.912l-10.958.008c-1.718.43-3.174 1.469-3.9 2.84l.888-.015h16.972v-8.505h-13.96V66.79ZM123.355 78.071c1.526-.582 2.346-1.589 2.661-2.767h-13.572l.009-11.285-3.043.008v14.044h13.945ZM135.208 66.827h11.635c1.616-.29 2.818-1.573 3.157-2.815h-17.948c.335 1.242 1.555 2.526 3.156 2.815ZM132.519 69.574v8.492h3.026v-5.654h11.013v5.654h3.024v-8.478l-17.063-.014Z" />
-        </g>
+          {!disableBranding && (
+            <g fill="#8E8E8E" opacity={0.68} transform="scale(0.5) translate(90, 30)" className="teslaLogo">
+              <path d="M30 64.034c.35 1.228 1.53 2.482 3.15 2.796h4.896l.25.09v11.118h3.058V66.92l.277-.089h4.9c1.639-.38 2.794-1.568 3.138-2.796v-.027H30v.027ZM60.26 78.07h11.63c1.62-.29 2.822-1.573 3.159-2.815H57.101c.336 1.242 1.556 2.525 3.159 2.815ZM60.26 72.366h11.63c1.62-.287 2.822-1.57 3.159-2.814H57.101c.336 1.244 1.556 2.527 3.159 2.814ZM60.26 66.816h11.63c1.62-.29 2.822-1.573 3.159-2.816H57.101c.336 1.243 1.556 2.525 3.159 2.816ZM86.787 66.789h10.745c1.62-.424 2.981-1.535 3.312-2.766h-17.07v8.3h13.971v2.912l-10.958.008c-1.718.43-3.174 1.469-3.9 2.84l.888-.015h16.972v-8.505h-13.96V66.79ZM123.355 78.071c1.526-.582 2.346-1.589 2.661-2.767h-13.572l.009-11.285-3.043.008v14.044h13.945ZM135.208 66.827h11.635c1.616-.29 2.818-1.573 3.157-2.815h-17.948c.335 1.242 1.555 2.526 3.156 2.815ZM132.519 69.574v8.492h3.026v-5.654h11.013v5.654h3.024v-8.478l-17.063-.014Z" />
+            </g>
+          )}
         <path fill="url(#c)" d="M0 0h180v100H0z" />
       </g>
       <defs>
@@ -168,7 +171,7 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
         </clipPath>
       </defs>
 
-      <text y="-50" textAnchor="middle" className="fill-black/90 text-lg font-medium">
+      <text y={disableBranding ? -24 : -50} textAnchor="middle" className="fill-black/90 text-lg font-medium">
         {displayPower} kW
       </text>
       {percentage > 0.1 && (
@@ -211,10 +214,11 @@ export default function PowerFlow({
     batteryToHome: batteryPower > 10 && homePower > solarPower,
     batteryToGrid: gridPower < -10 && batteryPower > 10 && Math.abs(gridPower) >= homePower - solarPower,
   }
+  const solarOnly = SOLAR_ONLY
 
   return (
     <div className="w-full h-screen bg-[#111217]">
-      <svg viewBox="0 0 520 350" className="w-full h-full">
+      <svg viewBox={solarOnly ? "0 0 520 190" : "0 0 520 350"} className="w-full h-full">
         <g transform="translate(260,52)">
           {/* Solar to Home */}
           <GradientPath
@@ -235,14 +239,16 @@ export default function PowerFlow({
             isActive={flows.solarToGrid}
           />
           {/* Grid to Battery */}
-          <GradientPath
-            path={createPath(-175, 105, -5, 255, true)}
-            startColor={nodeColors.grid}
-            endColor={nodeColors.battery}
-            angle={45}
-            endOffset="40%"
-            isActive={flows.gridToBattery}
-          />
+            { !solarOnly && (
+              <GradientPath
+                path={createPath(-175, 105, -5, 255, true)}
+                startColor={nodeColors.grid}
+                endColor={nodeColors.battery}
+                angle={45}
+                endOffset="40%"
+                isActive={flows.gridToBattery}
+              />
+          )}
           {/* Grid to Home */}
           <GradientPath
             path={createPath(-175, 100, 175, 100, true)}
@@ -253,32 +259,38 @@ export default function PowerFlow({
             isActive={flows.gridToHome}
           />
           {/* Solar to Battery */}
-          <GradientPath
-            path={createPath(0, 30, 0, 255, true)}
-            startColor={nodeColors.solar}
-            endColor={nodeColors.battery}
-            angle={90}
-            endOffset="50%"
-            isActive={flows.solarToBattery}
-          />
+          { !solarOnly && (
+            <GradientPath
+              path={createPath(0, 30, 0, 255, true)}
+              startColor={nodeColors.solar}
+              endColor={nodeColors.battery}
+              angle={90}
+              endOffset="50%"
+              isActive={flows.solarToBattery}
+            />
+          )}
           {/* Battery to Home */}
-          <GradientPath
-            path={createPath(5, 180, 175, 105, false)}
-            startColor={nodeColors.battery}
-            endColor={nodeColors.home}
-            angle={45}
-            endOffset="50%"
-            isActive={flows.batteryToHome}
-          />
+          { !solarOnly && (
+            <GradientPath
+              path={createPath(5, 180, 175, 105, false)}
+              startColor={nodeColors.battery}
+              endColor={nodeColors.home}
+              angle={45}
+              endOffset="50%"
+              isActive={flows.batteryToHome}
+            />
+          )}
           {/* Battery to Grid */}
-          <GradientPath
-            path={createPath(-5, 180, -175, 105, false)}
-            startColor={nodeColors.battery}
-            endColor={nodeColors.grid}
-            angle={225}
-            endOffset="50%"
-            isActive={flows.batteryToGrid}
-          />
+          { !solarOnly && (
+            <GradientPath
+              path={createPath(-5, 180, -175, 105, false)}
+              startColor={nodeColors.battery}
+              endColor={nodeColors.grid}
+              angle={225}
+              endOffset="50%"
+              isActive={flows.batteryToGrid}
+            />
+          )}
 
           {/* Nodes */}
           <PowerNode
@@ -306,7 +318,9 @@ export default function PowerFlow({
             color="#38bdf8"
             flowDirection="in"
           />
-          <BatteryNode x={0} y={250} power={batteryPower} percentage={batteryPercentage} />
+          { !solarOnly && (
+            <BatteryNode x={0} y={250} power={batteryPower} percentage={batteryPercentage} />
+          )}
         </g>
       </svg>
     </div>
