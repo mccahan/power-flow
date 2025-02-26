@@ -209,8 +209,8 @@ export default function PowerFlow({
     solarToHome: solarPower > 10,
     solarToGrid: solarPower - homePower >= Math.abs(gridPower) && gridPower < 0,
     solarToBattery: solarPower > 10 && batteryPower < -10 && solarPower > homePower,
-    gridToBattery: gridPower > 10 && batteryPower < -10 && Math.abs(batteryPower) > solarPower - homePower,
-    gridToHome: gridPower > 10 && homePower > solarPower + batteryPower,
+    gridToBattery: gridStatus === "1" && gridPower > 10 && batteryPower < -10 && Math.abs(batteryPower) > solarPower - homePower,
+    gridToHome: gridStatus === "1" && gridPower > 10 && homePower > solarPower + batteryPower,
     batteryToHome: batteryPower > 10 && homePower > solarPower,
     batteryToGrid: gridPower < -10 && batteryPower > 10 && Math.abs(gridPower) >= homePower - solarPower,
   }
