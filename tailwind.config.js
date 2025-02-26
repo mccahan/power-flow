@@ -61,7 +61,7 @@ module.exports = {
         },
         "ping-out": {
           "0%": { transform: "scale(1.1)", opacity: "0.4" },
-          "100%": { transform: "scale(1.4)", opacity: "0" },
+          "100%": { transform: "scale(1.3)", opacity: "0" },
         },
       },
       animation: {

@@ -82,12 +82,12 @@ function GradientPath({
         </linearGradient>
         <mask id={maskId}>
           <g>
-            <path d={path} stroke="white" strokeWidth="1" fill="none" />
+            <path d={path} stroke="white" strokeWidth="1.5" fill="none" />
           </g>
         </mask>
       </defs>
       <rect x="-1000" y="-1000" width="2000" height="2000" fill={`url(#${id})`} mask={`url(#${maskId})`} />
-      <circle r="3" fill={startColor} opacity="0.6">
+      <circle r="5" fill={startColor} opacity="0.6">
         <animateMotion dur="2s" repeatCount="indefinite" path={path} />
       </circle>
     </g>
@@ -116,7 +116,7 @@ function PowerNode({
     <g transform={`translate(${x},${y})`}>
       {flowDirection && (
         <circle
-          r="24"
+          r="32"
           fill="none"
           stroke={color}
           strokeWidth="4"
@@ -124,9 +124,9 @@ function PowerNode({
           className={flowDirection ? "animate-ping-out" : ""}
         />
       )}
-      <circle r="24" fill="none" stroke={renderColor} strokeWidth="2" strokeDasharray="1 2" />
-      <g transform="translate(-13,-13) scale(1.1)">{icon}</g>
-      <text y="-35" textAnchor="middle" className="text-lg font-medium" fill={renderColor} fontVariant="tabular-nums">
+      <circle r="32" fill="none" stroke={renderColor} strokeWidth="2" strokeDasharray="0.5 2" />
+      <g transform="translate(-18,-18) scale(1.5)" opacity="0.8">{icon}</g>
+      <text y="-50" textAnchor="middle" className="text-xl font-600" fill={renderColor} fontVariant="tabular-nums">
         {label}
       </text>
       {crossOut && (
@@ -147,13 +147,13 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
   return (
     <g transform={`translate(${x},${y})`}>
       <g clipPath="url(#a)" transform={`translate(-90,-80)`}>
-        <path fill="url(#b)" d="M0 0h180v100H0z" />
+        <path fill="url(#b)" d="M0 0h160v100H0z" />
           {!disableBranding && (
-            <g fill="#8E8E8E" opacity={0.68} transform="scale(0.5) translate(90, 30)" className="teslaLogo">
+            <g fill="#8E8E8E" opacity={0.68} transform="scale(0.5) translate(70, 30)" className="teslaLogo">
               <path d="M30 64.034c.35 1.228 1.53 2.482 3.15 2.796h4.896l.25.09v11.118h3.058V66.92l.277-.089h4.9c1.639-.38 2.794-1.568 3.138-2.796v-.027H30v.027ZM60.26 78.07h11.63c1.62-.29 2.822-1.573 3.159-2.815H57.101c.336 1.242 1.556 2.525 3.159 2.815ZM60.26 72.366h11.63c1.62-.287 2.822-1.57 3.159-2.814H57.101c.336 1.244 1.556 2.527 3.159 2.814ZM60.26 66.816h11.63c1.62-.29 2.822-1.573 3.159-2.816H57.101c.336 1.243 1.556 2.525 3.159 2.816ZM86.787 66.789h10.745c1.62-.424 2.981-1.535 3.312-2.766h-17.07v8.3h13.971v2.912l-10.958.008c-1.718.43-3.174 1.469-3.9 2.84l.888-.015h16.972v-8.505h-13.96V66.79ZM123.355 78.071c1.526-.582 2.346-1.589 2.661-2.767h-13.572l.009-11.285-3.043.008v14.044h13.945ZM135.208 66.827h11.635c1.616-.29 2.818-1.573 3.157-2.815h-17.948c.335 1.242 1.555 2.526 3.156 2.815ZM132.519 69.574v8.492h3.026v-5.654h11.013v5.654h3.024v-8.478l-17.063-.014Z" />
             </g>
           )}
-        <path fill="url(#c)" d="M0 0h180v100H0z" />
+        <path fill="url(#c)" d="M0 0h160v100H0z" />
       </g>
       <defs>
         <linearGradient id="b" x1={126.5} x2={9} y1={13} y2={90.5} gradientUnits="userSpaceOnUse">
@@ -167,18 +167,18 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
           <stop offset={1} stopColor="#EFEFEF" />
         </linearGradient>
         <clipPath id="a">
-          <path fill="#fff" d="M0 0h180v100H0z" />
+          <path fill="#fff" d="M0 0h160v100H0z" />
         </clipPath>
       </defs>
 
-      <text y={disableBranding ? -24 : -50} textAnchor="middle" className="fill-black/90 text-lg font-medium">
+      <text y={disableBranding ? -24 : -50} x="-10" textAnchor="middle" className="fill-black/90 text-xl font-medium">
         {displayPower} kW
       </text>
       {percentage > 0.1 && (
         <g transform="translate(0,35)">
-          <rect x="-90" y="-4" width="140" height="8" rx="4" className="fill-white/20" />
-          <rect x="-90" y="-4" width={(140 * displayPercentage) / 100} height="8" rx="4" className="fill-green-500" />
-          <text x="90" y="5" textAnchor="end" className="fill-white/90 text-sm">
+          <rect x="-90" y="-4" width="120" height="8" rx="4" className="fill-white/20" />
+          <rect x="-90" y="-4" width={(120 * displayPercentage) / 100} height="8" rx="4" className="fill-green-500" />
+          <text x="70" y="5" textAnchor="end" className="fill-white/90 text-sm">
         {displayPercentage}%
           </text>
         </g>
@@ -216,13 +216,20 @@ export default function PowerFlow({
   }
   const solarOnly = SOLAR_ONLY
 
+  const gridHomeY = 100
+  const nodesX = 190
+  const homeX = nodesX - 35
+  const gridX = -nodesX + 35
+  const batteryY = 230
+  const solarY = 40
+
   return (
     <div className="w-full h-screen bg-[#111217]">
-      <svg viewBox={solarOnly ? "0 0 520 190" : "0 0 520 350"} className="w-full h-full">
+      <svg viewBox={solarOnly ? "20 -10 480 190" : "20 -10 480 320"} className="w-full h-full">
         <g transform="translate(260,52)">
           {/* Solar to Home */}
           <GradientPath
-            path={createPath(5, 30, 175, 95, false)}
+            path={createPath(5, solarY, homeX, gridHomeY-5, false)}
             startColor={nodeColors.solar}
             endColor={nodeColors.home}
             angle={45}
@@ -231,7 +238,7 @@ export default function PowerFlow({
           />
           {/* Solar to Grid */}
           <GradientPath
-            path={createPath(-5, 30, -175, 95, false)}
+            path={createPath(-5, solarY, gridX, gridHomeY-5, false)}
             startColor={nodeColors.solar}
             endColor={nodeColors.grid}
             angle={180}
@@ -241,7 +248,7 @@ export default function PowerFlow({
           {/* Grid to Battery */}
             { !solarOnly && (
               <GradientPath
-                path={createPath(-175, 105, -5, 255, true)}
+                path={createPath(gridX, gridHomeY+5, -5, batteryY, true)}
                 startColor={nodeColors.grid}
                 endColor={nodeColors.battery}
                 angle={45}
@@ -251,7 +258,7 @@ export default function PowerFlow({
           )}
           {/* Grid to Home */}
           <GradientPath
-            path={createPath(-175, 100, 175, 100, true)}
+            path={createPath(gridX, gridHomeY, homeX, gridHomeY, true)}
             startColor={nodeColors.grid}
             endColor={nodeColors.home}
             angle={0}
@@ -261,7 +268,7 @@ export default function PowerFlow({
           {/* Solar to Battery */}
           { !solarOnly && (
             <GradientPath
-              path={createPath(0, 30, 0, 255, true)}
+              path={createPath(0, solarY, 0, batteryY, true)}
               startColor={nodeColors.solar}
               endColor={nodeColors.battery}
               angle={90}
@@ -272,7 +279,7 @@ export default function PowerFlow({
           {/* Battery to Home */}
           { !solarOnly && (
             <GradientPath
-              path={createPath(5, 180, 175, 105, false)}
+              path={createPath(5, batteryY, homeX, gridHomeY+5, false)}
               startColor={nodeColors.battery}
               endColor={nodeColors.home}
               angle={45}
@@ -283,7 +290,7 @@ export default function PowerFlow({
           {/* Battery to Grid */}
           { !solarOnly && (
             <GradientPath
-              path={createPath(-5, 180, -175, 105, false)}
+              path={createPath(-5, batteryY, gridX, gridHomeY+5, false)}
               startColor={nodeColors.battery}
               endColor={nodeColors.grid}
               angle={225}
@@ -302,8 +309,8 @@ export default function PowerFlow({
             flowDirection={solarPower > 20 ? "out" : null}
           />
           <PowerNode
-            x={-200}
-            y={100}
+            x={-nodesX}
+            y={gridHomeY}
             icon={<UtilityPole className={`w-8 h-8 ${Math.abs(gridPower) > 50 ? "text-white" : "text-white/25"}`} />}
             label={`${formatPower(gridPower)} kW`}
             color="#ffffff"
@@ -311,15 +318,15 @@ export default function PowerFlow({
             crossOut={gridStatus != "1"}
           />
           <PowerNode
-            x={200}
-            y={100}
+            x={nodesX}
+            y={gridHomeY}
             icon={<Home className="w-8 h-8 text-sky-400" />}
             label={`${formatPower(homePower)} kW`}
             color="#38bdf8"
             flowDirection="in"
           />
           { !solarOnly && (
-            <BatteryNode x={0} y={250} power={batteryPower} percentage={batteryPercentage} />
+            <BatteryNode x={10} y={215} power={batteryPower} percentage={batteryPercentage} />
           )}
         </g>
       </svg>
