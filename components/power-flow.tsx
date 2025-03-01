@@ -236,6 +236,10 @@ export default function PowerFlow({
   const batteryY = 230
   const solarY = 40
 
+  if (gridStatus === "0") {
+    gridPower = 0
+  }
+
   return (
     <div className="w-full h-full">
       <svg viewBox={solarOnly ? "20 -10 480 190" : "20 -10 480 320"} className="w-full h-full">
