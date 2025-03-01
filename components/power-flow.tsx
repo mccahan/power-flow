@@ -222,7 +222,7 @@ export default function PowerFlow({
     gridToBattery: gridStatus === "1" && gridPower > 10 && batteryPower < -10 && Math.abs(batteryPower) > solarPower - homePower,
     gridToHome: gridStatus === "1" && gridPower > 10 && homePower > solarPower + batteryPower,
     batteryToHome: batteryPower > 10 && homePower > solarPower,
-    batteryToGrid: gridPower < -10 && batteryPower > 10 && Math.abs(gridPower) >= homePower - solarPower,
+    batteryToGrid: gridPower < -10 && batteryPower > 10 && Math.abs(gridPower) >= homePower - solarPower - batteryPower,
   }
   const solarOnly = SOLAR_ONLY
 
