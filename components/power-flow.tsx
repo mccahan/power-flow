@@ -97,6 +97,7 @@ function GradientPath({
 function PowerNode({
   x,
   y,
+  name,
   icon,
   label,
   rawValue,
@@ -106,6 +107,7 @@ function PowerNode({
 }: {
   x: number
   y: number
+  name: string,
   icon: React.ReactNode
   label: string
   rawValue: string
@@ -115,7 +117,7 @@ function PowerNode({
 }) {
   const renderColor = flowDirection ? color : "rgba(255, 255, 255, 0.25)"
   return (
-    <g transform={`translate(${x},${y})`} className="power-node">
+    <g transform={`translate(${x},${y})`} className="power-node" onClick={() => window.parent.postMessage({ nodeName: name }, "*")}>
       {flowDirection && (
         <circle
           r="32"
@@ -152,7 +154,7 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
   const disableBranding = DISABLE_BRANDING
 
   return (
-    <g transform={`translate(${x},${y})`} className="power-node">
+    <g transform={`translate(${x},${y})`} className="power-node" onClick={() => window.parent.postMessage({ nodeName: 'battery' }, "*")}>
       <g clipPath="url(#a)" transform={`translate(-90,-80)`}>
         <path fill="url(#b)" d="M0 0h160v100H0z" />
           {!disableBranding && (
@@ -314,6 +316,7 @@ export default function PowerFlow({
           <PowerNode
             x={0}
             y={5}
+            name="solar"
             icon={<Sun className={`w-8 h-8 ${solarPower > 0 ? "text-yellow-400" : "text-white/25"}`} />}
             label={`${formatPower(solarPower)} kW`}
             rawValue={`${formatWatts(solarPower)} W`}
@@ -323,6 +326,7 @@ export default function PowerFlow({
           <PowerNode
             x={-nodesX}
             y={gridHomeY}
+            name="grid"
             icon={<UtilityPole className={`w-8 h-8 ${Math.abs(gridPower) > 50 ? "text-white" : "text-white/25"}`} />}
             label={`${formatPower(gridPower)} kW`}
             rawValue={`${formatWatts(gridPower)} W`}
@@ -333,6 +337,7 @@ export default function PowerFlow({
           <PowerNode
             x={nodesX}
             y={gridHomeY}
+            name="home"
             icon={<Home className="w-8 h-8 text-sky-400" />}
             label={`${formatPower(homePower)} kW`}
             rawValue={`${formatWatts(homePower)} W`}
