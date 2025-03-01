@@ -99,6 +99,7 @@ function PowerNode({
   y,
   icon,
   label,
+  rawValue,
   color,
   flowDirection,
   crossOut = false,
@@ -107,13 +108,14 @@ function PowerNode({
   y: number
   icon: React.ReactNode
   label: string
+  rawValue: string
   color: string
   flowDirection: "in" | "out" | null
   crossOut?: boolean
 }) {
   const renderColor = flowDirection ? color : "rgba(255, 255, 255, 0.25)"
   return (
-    <g transform={`translate(${x},${y})`}>
+    <g transform={`translate(${x},${y})`} className="power-node">
       {flowDirection && (
         <circle
           r="32"
@@ -124,10 +126,14 @@ function PowerNode({
           className={flowDirection ? "animate-ping-out" : ""}
         />
       )}
+      <rect x="-50" y="-65" width="100" height="110" fill="rgba(0, 0, 0, 0)" />
       <circle r="32" fill="none" stroke={renderColor} strokeWidth="2" strokeDasharray="0.5 2" />
       <g transform="translate(-18,-18) scale(1.5)" opacity="0.8">{icon}</g>
-      <text y="-50" textAnchor="middle" className="text-xl font-600" fill={renderColor} fontVariant="tabular-nums">
+      <text y="-50" textAnchor="middle" className="text-xl font-600 short-value" fill={renderColor} fontVariant="tabular-nums">
         {label}
+      </text>
+      <text y="-50" textAnchor="middle" className="text-xl font-600 raw-value" fill={renderColor} fontVariant="tabular-nums">
+        {rawValue}
       </text>
       {crossOut && (
         <g transform="translate(45, 0)" opacity="0.6">
@@ -205,6 +211,7 @@ export default function PowerFlow({
   gridStatus,
 }: PowerFlowProps) {
   const formatPower = (power: number) => (power / 1000).toFixed(1)
+  const formatWatts = (power: number) => (Math.round(power)).toLocaleString()
   const flows = {
     solarToHome: solarPower > 10,
     solarToGrid: solarPower - homePower >= Math.abs(gridPower) && gridPower < 0,
@@ -305,6 +312,7 @@ export default function PowerFlow({
             y={5}
             icon={<Sun className={`w-8 h-8 ${solarPower > 0 ? "text-yellow-400" : "text-white/25"}`} />}
             label={`${formatPower(solarPower)} kW`}
+            rawValue={`${formatWatts(solarPower)} W`}
             color="#facc15"
             flowDirection={solarPower > 20 ? "out" : null}
           />
@@ -313,6 +321,7 @@ export default function PowerFlow({
             y={gridHomeY}
             icon={<UtilityPole className={`w-8 h-8 ${Math.abs(gridPower) > 50 ? "text-white" : "text-white/25"}`} />}
             label={`${formatPower(gridPower)} kW`}
+            rawValue={`${formatWatts(gridPower)} W`}
             color="#ffffff"
             flowDirection={Math.abs(gridPower) < 50 ? null : gridPower < 0 ? "in" : "out"}
             crossOut={gridStatus != "1"}
@@ -322,6 +331,7 @@ export default function PowerFlow({
             y={gridHomeY}
             icon={<Home className="w-8 h-8 text-sky-400" />}
             label={`${formatPower(homePower)} kW`}
+            rawValue={`${formatWatts(homePower)} W`}
             color="#38bdf8"
             flowDirection="in"
           />

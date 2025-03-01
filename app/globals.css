@@ -8,3 +8,15 @@ body {
   background-color: #111217;
 }
 
+.power-node .raw-value {
+  opacity: 0;
+}
+.power-node text {
+  transition: opacity 0.2s ease-in-out;
+}
+.power-node:hover .raw-value {
+  opacity: 1;
+}
+.power-node:hover .short-value {
+  opacity: 0;
+}
