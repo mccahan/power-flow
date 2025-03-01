@@ -224,7 +224,7 @@ export default function PowerFlow({
   const solarY = 40
 
   return (
-    <div className="w-full h-screen bg-[#111217]">
+    <div className="w-full h-full">
       <svg viewBox={solarOnly ? "20 -10 480 190" : "20 -10 480 320"} className="w-full h-full">
         <g transform="translate(260,52)">
           {/* Solar to Home */}

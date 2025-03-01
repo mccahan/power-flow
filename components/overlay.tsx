@@ -10,7 +10,7 @@ export default function Overlay({ show, children }: OverlayProps) {
   return (
     <div
       className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center bg-[#111217] transition-opacity duration-300",
+        "fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300",
         show ? "opacity-100" : "pointer-events-none opacity-0",
       )}
     >

@@ -69,7 +69,11 @@ function PowerFlowWrapper() {
       <Loading show={isLoading} isStale={isStale} />
       {isError && <ErrorMessage message={error.message} />}
       {data && (
-        <div className="absolute inset-0 flex items-center justify-center max-w-[600px] left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
+        <div
+          className={`absolute inset-0 flex items-center justify-center max-w-[600px] left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full ${
+            new URLSearchParams(window.location.search).has("padded") ? "p-5" : ""
+          }`}
+        >
           <PowerFlow {...data} />
         </div>
       )}
