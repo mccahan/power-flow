@@ -147,6 +147,7 @@ function PowerNode({
 
 function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power: number; percentage: number }) {
   const displayPower = (power / 1000).toFixed(1)
+  const watts = Math.round(power).toLocaleString()
   const displayPercentage = Math.round(percentage)
   const disableBranding = DISABLE_BRANDING
 
