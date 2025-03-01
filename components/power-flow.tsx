@@ -151,7 +151,7 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
   const disableBranding = DISABLE_BRANDING
 
   return (
-    <g transform={`translate(${x},${y})`}>
+    <g transform={`translate(${x},${y})`} className="power-node">
       <g clipPath="url(#a)" transform={`translate(-90,-80)`}>
         <path fill="url(#b)" d="M0 0h160v100H0z" />
           {!disableBranding && (
@@ -177,8 +177,11 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
         </clipPath>
       </defs>
 
-      <text y={disableBranding ? -24 : -50} x="-10" textAnchor="middle" className="fill-black/90 text-xl font-medium">
+      <text y={disableBranding ? -24 : -50} x="-10" textAnchor="middle" className="fill-black/90 text-xl font-medium short-value">
         {displayPower} kW
+      </text>
+      <text y={disableBranding ? -24 : -50} x="-10" textAnchor="middle" className="fill-black/90 text-xl font-medium raw-value">
+        {watts} W
       </text>
       {percentage > 0.1 && (
         <g transform="translate(0,35)">
