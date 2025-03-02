@@ -151,7 +151,7 @@ function BatteryNode({ x, y, power, percentage }: { x: number; y: number; power:
   const displayPower = (power / 1000).toFixed(1)
   const watts = Math.round(power).toLocaleString()
   const displayPercentage = Math.round(percentage)
-  const disableBranding = DISABLE_BRANDING
+  const disableBranding = true
 
   return (
     <g transform={`translate(${x},${y})`} className="power-node" onClick={() => window.parent.postMessage({ nodeName: 'battery' }, "*")}>
