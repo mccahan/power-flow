@@ -27,7 +27,7 @@ function PowerFlowWrapper() {
           throw new Error("Invalid response: insufficient data")
         }
 
-        const [grid, home, solar, battery, batteryPercentage, gridStatus] = values
+        const [grid, home, solar, battery, rawBatteryPercentage, gridStatus] = values
 
         const adjustPower = (power: number) => {
           if (power > 0 && power < 50) return 100
@@ -35,7 +35,7 @@ function PowerFlowWrapper() {
           return power
         }
 
-        batteryPercentage = Number.parseFloat(batteryPercentage)
+        let batteryPercentage = Number.parseFloat(rawBatteryPercentage)
         batteryPercentage = 100 * (batteryPercentage - 5) / 95
 
         const statuses = {
