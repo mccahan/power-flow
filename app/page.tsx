@@ -35,12 +35,15 @@ function PowerFlowWrapper() {
           return power
         }
 
+        batteryPercentage = Number.parseFloat(batteryPercentage)
+        batteryPercentage = 100 * (batteryPercentage - 5) / 95
+
         const statuses = {
           gridPower: adjustPower(Number.parseFloat(grid)),
           homePower: adjustPower(Number.parseFloat(home)),
           solarPower: adjustPower(Number.parseFloat(solar)),
           batteryPower: adjustPower(Number.parseFloat(battery)),
-          batteryPercentage: Number.parseFloat(batteryPercentage),
+          batteryPercentage,
           gridStatus: gridStatus.trim(),
         }
 
