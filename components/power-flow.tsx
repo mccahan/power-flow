@@ -220,7 +220,7 @@ export default function PowerFlow({
   const formatWatts = (power: number) => (Math.round(power)).toLocaleString()
   const flows = {
     solarToHome: solarPower > 10,
-    solarToGrid: solarPower - homePower >= Math.abs(gridPower) && gridPower < 0,
+    solarToGrid: solarPower > 10 && solarPower > homePower && gridPower < 0,
     solarToBattery: solarPower > 10 && batteryPower < -10 && solarPower > homePower,
     gridToBattery: gridStatus === "1" && gridPower > 10 && batteryPower < -10 && Math.abs(batteryPower) > solarPower - homePower,
     gridToHome: gridStatus === "1" && gridPower > 10 && homePower > solarPower + batteryPower,
